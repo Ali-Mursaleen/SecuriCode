@@ -366,29 +366,6 @@ function login(username, password) {
                 <p id="recommendationText">We'll provide security recommendations after analyzing your code</p>
             </div>
         </div>
-        
-        <div class="instructions">
-            <h3>Environment Setup Instructions</h3>
-            <p>To use environment variables for your API tokens:</p>
-            
-            <p>1. Create a <code>.env</code> file in your project root:</p>
-            <code>DEEPSEEK_API_TOKEN=sk-a0144da348574e23bd45f887f6a75ee2
-SEMGREP_API_TOKEN=1f2f265cd8d1f0bdd24131b55d5d06ecb8be8235d7411ef04349a3177c4cfc13
-PORT=3001</code>
-            
-            <p>2. Install the dotenv package:</p>
-            <code>npm install dotenv</code>
-            
-            <p>3. Modify your server.js to use environment variables:</p>
-            <code>require('dotenv').config();
-
-const DEEPSEEK_API_TOKEN = process.env.DEEPSEEK_API_TOKEN;
-const SEMGREP_API_TOKEN = process.env.SEMGREP_API_TOKEN;
-const PORT = process.env.PORT || 3001;</code>
-            
-            <p>4. Add <code>.env</code> to your <code>.gitignore</code> file to keep your tokens secure.</p>
-        </div>
-        
         <footer>
             <p>SecuriCode uses advanced AI and static analysis to detect vulnerabilities in your JavaScript code</p>
             <p>Powered by DeepSeek AI and Semgrep-based security scanning</p>
@@ -414,15 +391,11 @@ const PORT = process.env.PORT || 3001;</code>
                 improvedCode.textContent = "Connecting to DeepSeek API...";
                 
                 try {
-                    // In a real implementation, this would call your backend API
-                    // For demonstration, we'll simulate the API call
                     const improvedCodeResponse = await simulateDeepSeekAPI(originalCode.value);
                     improvedCode.textContent = improvedCodeResponse;
                     
-                    // Analyze security of both codes
                     const securityAnalysis = await simulateSecurityAnalysis(originalCode.value, improvedCodeResponse);
-                    
-                    // Display results
+
                     displayResults(securityAnalysis);
                     
                 } catch (error) {
@@ -442,10 +415,8 @@ const PORT = process.env.PORT || 3001;</code>
             });
             
             async function simulateDeepSeekAPI(code) {
-                // Simulate API delay
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
-                // Apply security improvements based on code content
                 let improvedCode = code;
                 
                 if (code.includes("innerHTML")) {
@@ -471,17 +442,14 @@ const PORT = process.env.PORT || 3001;</code>
             }
             
             async function simulateSecurityAnalysis(originalCode, improvedCode) {
-                // Simulate API delay
                 await new Promise(resolve => setTimeout(resolve, 1500));
                 
-                // Analyze the code to generate relevant vulnerabilities
                 const issues = {
                     original: 0,
                     improved: 0,
                     vulnerabilities: []
                 };
                 
-                // Check for SQL injection
                 if (originalCode.includes("'+") && originalCode.includes("SELECT")) {
                     issues.original++;
                     issues.vulnerabilities.push({
@@ -493,7 +461,6 @@ const PORT = process.env.PORT || 3001;</code>
                     if (improvedCode.includes("?")) issues.improved++;
                 }
                 
-                // Check for XSS
                 if (originalCode.includes("innerHTML")) {
                     issues.original++;
                     issues.vulnerabilities.push({
@@ -505,7 +472,6 @@ const PORT = process.env.PORT || 3001;</code>
                     if (improvedCode.includes("textContent")) issues.improved++;
                 }
                 
-                // Check for eval
                 if (originalCode.includes("eval(")) {
                     issues.original++;
                     issues.vulnerabilities.push({
@@ -517,7 +483,6 @@ const PORT = process.env.PORT || 3001;</code>
                     if (!improvedCode.includes("eval(")) issues.improved++;
                 }
                 
-                // Check for missing input validation
                 if (originalCode.includes(".value") && !originalCode.includes("sanitize") && !originalCode.includes("validate")) {
                     issues.original++;
                     issues.vulnerabilities.push({

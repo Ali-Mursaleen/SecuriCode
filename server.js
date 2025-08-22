@@ -7,7 +7,6 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Use environment variables for API tokens
 const DEEPSEEK_API_TOKEN = process.env.DEEPSEEK_API_TOKEN;
 const SEMGREP_API_TOKEN = process.env.SEMGREP_API_TOKEN;
 
@@ -61,17 +60,12 @@ app.post('/api/analyze-security', async (req, res) => {
   const { originalCode, improvedCode } = req.body;
   
   try {
-    // For Semgrep, you would typically use their CLI or cloud API
-    // This is a simplified simulation of what the response might look like
-    
-    // Simulate analysis based on code content
     const issues = {
       original: 0,
       improved: 0,
       vulnerabilities: []
     };
-    
-    // Check for SQL injection patterns
+  
     if (originalCode.includes("'+") && originalCode.includes("SELECT")) {
       issues.original++;
       issues.vulnerabilities.push({
@@ -82,7 +76,6 @@ app.post('/api/analyze-security', async (req, res) => {
       });
     }
     
-    // Check for XSS patterns
     if (originalCode.includes("innerHTML")) {
       issues.original++;
       issues.vulnerabilities.push({
@@ -93,7 +86,6 @@ app.post('/api/analyze-security', async (req, res) => {
       });
     }
     
-    // Check for eval usage
     if (originalCode.includes("eval(")) {
       issues.original++;
       issues.vulnerabilities.push({
@@ -104,7 +96,6 @@ app.post('/api/analyze-security', async (req, res) => {
       });
     }
     
-    // Count issues in improved code
     if (improvedCode.includes("'+") && improvedCode.includes("SELECT")) issues.improved++;
     if (improvedCode.includes("innerHTML")) issues.improved++;
     if (improvedCode.includes("eval(")) issues.improved++;
